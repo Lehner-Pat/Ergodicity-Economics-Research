@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+def fibonacci_sphere(num_points, radius=1):
+    points = []
+    golden_angle = np.pi * (3 - np.sqrt(5))  
+
+    for i in range(num_points):
+        theta = np.arccos(1 - 2 * (i + 0.5) / num_points)  # Polar angle
+        phi = i * golden_angle  # Azimuthal angle
+
+        x = radius * np.sin(theta) * np.cos(phi)
+        y = radius * np.sin(theta) * np.sin(phi)
+        z = radius * np.cos(theta)
+
+        points.append((x, y, z))
+
+    return np.array(points)
+
+# Parameters
+num_points = 500  # Number of points making up the sphere surface.
+radius = 1 / (2 * np.sqrt(np.pi))  # Derived Radius from a sphere with a surface area normalised to 1, according to Kolmogorov.
+
+# Point gerenation function
+points = fibonacci_sphere(num_points, radius)
+
+# Plot the points on a 3D sphere
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(points[:, 0], points[:, 1], points[:, 2], s=5, c='blue')
+
+# Set aspect ratio and labels
+ax.set_box_aspect([1, 1, 1])
+ax.set_title("Fibonacci Sphere (Normalized Surface Area)")
+
+plt.show()
