@@ -1,0 +1,32 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+steps = 600  # Number of steps
+delta = 0.1  # Step size
+start_value = 1  # Initial value
+gravity_strength = 0.5  # Strength of the pull toward the initial value
+
+# Initialize path
+path = [start_value]
+
+# Generate random walk with gravity
+for _ in range(steps):
+    current_value = path[-1]
+    # Adjust probabilities based on distance from initial value
+    distance = current_value - start_value
+    prob_up = 0.5 - gravity_strength * distance  # Reduce upward probability if above 1
+    prob_up = np.clip(prob_up, 0.1, 0.9)  # Keep probabilities within a valid range
+    step = delta if np.random.rand() < prob_up else -delta  # Choose step
+    path.append(current_value + step)
+
+# Plot the path
+plt.figure(figsize=(10, 5))
+plt.plot(range(steps + 1), path, marker='o', linestyle='-', color='b', label='Random Walk with Gravity')
+plt.axhline(y=start_value, color='gray', linestyle='--', label='Initial Value (1)')
+plt.title("Random Walk with Gravitational Pull to Initial Value")
+plt.xlabel("Step")
+plt.ylabel("Value")
+plt.legend()
+plt.grid()
+plt.show()
